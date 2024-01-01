@@ -4,6 +4,7 @@ import {
 } from "../../packages/excalidraw/data/encode";
 import {
   decryptData,
+  encryptData,
   generateEncryptionKey,
   IV_LENGTH_BYTES,
 } from "../../packages/excalidraw/data/encryption";
@@ -33,7 +34,7 @@ import {
   WS_SUBTYPES,
 } from "../app_constants";
 import { encodeFilesForUpload } from "./FileManager";
-import { saveFilesToFirebase } from "./firebase";
+import { getStorageBackend } from "./config";
 
 export type SyncableExcalidrawElement = ExcalidrawElement & {
   _brand: "SyncableExcalidrawElement";
@@ -343,7 +344,8 @@ export const exportToBackend = async (
       url.hash = `json=${json.id},${encryptionKey}`;
       const urlString = url.toString();
 
-      await saveFilesToFirebase({
+      const storageBackend = await getStorageBackend();
+      await storageBackend.saveFilesToStorageBackend({
         prefix: `/files/shareLinks/${json.id}`,
         files: filesToUpload,
       });
