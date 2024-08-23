@@ -16,7 +16,7 @@ services:
       - NODE_ENV=production
 
   excalidraw-storage-backend:
-    build: 
+    build:
       context: https://github.com/kitsteam/excalidraw-storage-backend.git#main
       target: production
     ports:
@@ -30,7 +30,7 @@ services:
     restart: always
     ports:
       - "5012:80"
-  
+
   postgres:
     image: postgres:15-alpine
     # Pass config parameters to the postgres server.
