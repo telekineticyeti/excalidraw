@@ -27,7 +27,6 @@ import { canvasToBlob } from "./blob";
 import type { FileSystemHandle } from "./filesystem";
 import { fileSave } from "./filesystem";
 import { serializeAsJSON } from "./json";
-import { getElementsOverlappingFrame } from "../frame";
 
 export { loadFromBlob } from "./blob";
 export { loadFromJSON, saveAsJSON } from "./json";

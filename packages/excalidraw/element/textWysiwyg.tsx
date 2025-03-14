@@ -264,7 +264,6 @@ export const textWysiwyg = ({
           maxWidth,
           editorMaxHeight,
         ),
-        padding: `0 ${padding}px`,
         textAlign,
         verticalAlign,
         color: updatedTextElement.strokeColor,
@@ -305,6 +304,7 @@ export const textWysiwyg = ({
     minHeight: "1em",
     backfaceVisibility: "hidden",
     margin: 0,
+    padding: 0,
     border: 0,
     outline: 0,
     resize: "none",
@@ -350,7 +350,7 @@ export const textWysiwyg = ({
           font,
           getBoundTextMaxWidth(container, boundTextElement),
         );
-        const width = getTextWidth(wrappedText, font, true);
+        const width = getTextWidth(wrappedText, font);
         editable.style.width = `${width}px`;
       }
     };

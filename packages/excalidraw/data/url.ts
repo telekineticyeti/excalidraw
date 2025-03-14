@@ -1,10 +1,6 @@
 import { sanitizeUrl } from "@braintree/sanitize-url";
 import { escapeDoubleQuotes } from "../utils";
 
-export const sanitizeHTMLAttribute = (html: string) => {
-  return html.replace(/"/g, "&quot;");
-};
-
 export const normalizeLink = (link: string) => {
   link = link.trim();
   if (!link) {

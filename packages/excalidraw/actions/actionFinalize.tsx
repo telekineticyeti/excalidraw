@@ -51,7 +51,6 @@ export const actionFinalize = register({
             ...appState,
             cursorButton: "up",
             editingLinearElement: null,
-            selectedLinearElement: null,
           },
           captureUpdate: CaptureUpdateAction.IMMEDIATELY,
         };

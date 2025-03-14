@@ -1,7 +1,6 @@
 import path from "path";
 
 import { defineConfig } from "vitest/config";
-import { woff2BrowserPlugin } from "./scripts/woff2/woff2-vite-plugins";
 
 export default defineConfig({
   resolve: {

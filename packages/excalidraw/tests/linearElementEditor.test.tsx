@@ -4,7 +4,6 @@ import type {
   ExcalidrawLinearElement,
   ExcalidrawTextElementWithContainer,
   FontString,
-  SceneElementsMap,
 } from "../element/types";
 import { Excalidraw, mutateElement } from "../index";
 import { reseed } from "../random";

@@ -126,7 +126,7 @@ export const loadFromHttpStorage = async (
   roomId: string,
   roomKey: string,
   socket: Socket | null,
-): Promise<readonly ExcalidrawElement[] | null> => {
+): Promise<readonly SyncableExcalidrawElement[] | null> => {
   const HTTP_STORAGE_BACKEND_URL = import.meta.env
     .VITE_APP_HTTP_STORAGE_BACKEND_URL;
   const getResponse = await fetch(
@@ -134,13 +134,15 @@ export const loadFromHttpStorage = async (
   );
 
   const buffer = await getResponse.arrayBuffer();
-  const elements = await getElementsFromBuffer(buffer, roomKey);
+  const elements = getSyncableElements(
+    restoreElements(await getElementsFromBuffer(buffer, roomKey), null),
+  );
 
   if (socket) {
     httpStorageSceneVersionCache.set(socket, getSceneVersion(elements));
   }
 
-  return restoreElements(elements, null);
+  return elements;
 };
 
 const getElementsFromBuffer = async (
@@ -173,8 +175,8 @@ export const saveFilesToHttpStorage = async ({
   prefix: string;
   files: { id: FileId; buffer: Uint8Array }[];
 }) => {
-  const erroredFiles = new Map<FileId, true>();
-  const savedFiles = new Map<FileId, true>();
+  const erroredFiles: FileId[] = [];
+  const savedFiles: FileId[] = [];
 
   const HTTP_STORAGE_BACKEND_URL = import.meta.env
     .VITE_APP_HTTP_STORAGE_BACKEND_URL;
@@ -188,9 +190,9 @@ export const saveFilesToHttpStorage = async ({
           method: "PUT",
           body: payload,
         });
-        savedFiles.set(id, true);
+        savedFiles.push(id);
       } catch (error: any) {
-        erroredFiles.set(id, true);
+        erroredFiles.push(id);
       }
     }),
   );

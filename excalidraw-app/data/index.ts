@@ -35,7 +35,7 @@ import {
   ROOM_ID_BYTES,
 } from "../app_constants";
 import { encodeFilesForUpload } from "./FileManager";
-import { getStorageBackend } from "./config";
+import { saveFilesToFirebase } from "./firebase";
 
 export type SyncableExcalidrawElement = OrderedExcalidrawElement &
   MakeBrand<"SyncableExcalidrawElement">;
@@ -316,8 +316,7 @@ export const exportToBackend = async (
       url.hash = `json=${json.id},${encryptionKey}`;
       const urlString = url.toString();
 
-      const storageBackend = await getStorageBackend();
-      await storageBackend.saveFilesToStorageBackend({
+      await saveFilesToFirebase({
         prefix: `/files/shareLinks/${json.id}`,
         files: filesToUpload,
       });

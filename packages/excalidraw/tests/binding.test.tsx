@@ -81,7 +81,6 @@ describe("element binding", () => {
     });
     expect(arrow.endBinding).toEqual({
       elementId: rect.id,
-      fixedPoint: null,
       focus: expect.toBeNonNaNNumber(),
       gap: expect.toBeNonNaNNumber(),
     });

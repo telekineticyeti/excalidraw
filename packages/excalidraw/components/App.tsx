@@ -335,9 +335,6 @@ import {
   getContainerCenter,
   getContainerElement,
   isValidTextContainer,
-  measureText,
-  normalizeText,
-  wrapText,
 } from "../element/textElement";
 import {
   showHyperlinkTooltip,
@@ -1523,8 +1520,6 @@ class App extends React.Component<AppProps, AppState> {
         pendingImageElementId: this.state.pendingImageElementId,
       });
     this.visibleElements = visibleElements;
-
-    const allElementsMap = this.scene.getNonDeletedElementsMap();
 
     const allElementsMap = this.scene.getNonDeletedElementsMap();
 

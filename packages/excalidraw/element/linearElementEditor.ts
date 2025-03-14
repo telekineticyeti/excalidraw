@@ -336,7 +336,6 @@ export class LinearElementEditor {
               isDragging: pointIndex === lastClickedPoint,
             };
           }),
-          elementsMap,
         );
       }
 
@@ -419,19 +418,15 @@ export class LinearElementEditor {
           selectedPoint === element.points.length - 1
         ) {
           if (isPathALoop(element.points, appState.zoom.value)) {
-            LinearElementEditor.movePoints(
-              element,
-              [
-                {
-                  index: selectedPoint,
-                  point:
-                    selectedPoint === 0
-                      ? element.points[element.points.length - 1]
-                      : element.points[0],
-                },
-              ],
-              elementsMap,
-            );
+            LinearElementEditor.movePoints(element, [
+              {
+                index: selectedPoint,
+                point:
+                  selectedPoint === 0
+                    ? element.points[element.points.length - 1]
+                    : element.points[0],
+              },
+            ]);
           }
 
           const bindingElement = isBindingEnabled(appState)
@@ -921,11 +916,7 @@ export class LinearElementEditor {
 
     if (!event.altKey) {
       if (lastPoint === lastUncommittedPoint) {
-        LinearElementEditor.deletePoints(
-          element,
-          [points.length - 1],
-          elementsMap,
-        );
+        LinearElementEditor.deletePoints(element, [points.length - 1]);
       }
       return {
         ...appState.editingLinearElement,
@@ -963,16 +954,12 @@ export class LinearElementEditor {
     }
 
     if (lastPoint === lastUncommittedPoint) {
-      LinearElementEditor.movePoints(
-        element,
-        [
-          {
-            index: element.points.length - 1,
-            point: newPoint,
-          },
-        ],
-        elementsMap,
-      );
+      LinearElementEditor.movePoints(element, [
+        {
+          index: element.points.length - 1,
+          point: newPoint,
+        },
+      ]);
     } else {
       LinearElementEditor.addPoints(element, [{ point: newPoint }]);
     }
@@ -1223,7 +1210,6 @@ export class LinearElementEditor {
   static deletePoints(
     element: NonDeleted<ExcalidrawLinearElement>,
     pointIndices: readonly number[],
-    elementsMap: NonDeletedSceneElementsMap | SceneElementsMap,
   ) {
     let offsetX = 0;
     let offsetY = 0;
@@ -1253,13 +1239,7 @@ export class LinearElementEditor {
       return acc;
     }, []);
 
-    LinearElementEditor._updatePoints(
-      element,
-      nextPoints,
-      offsetX,
-      offsetY,
-      elementsMap,
-    );
+    LinearElementEditor._updatePoints(element, nextPoints, offsetX, offsetY);
   }
 
   static addPoints(
@@ -1270,13 +1250,7 @@ export class LinearElementEditor {
     const offsetY = 0;
 
     const nextPoints = [...element.points, ...targetPoints.map((x) => x.point)];
-    LinearElementEditor._updatePoints(
-      element,
-      nextPoints,
-      offsetX,
-      offsetY,
-      elementsMap,
-    );
+    LinearElementEditor._updatePoints(element, nextPoints, offsetX, offsetY);
   }
 
   static movePoints(
@@ -1322,7 +1296,6 @@ export class LinearElementEditor {
       nextPoints,
       offsetX,
       offsetY,
-      elementsMap,
       otherUpdates,
       {
         isDragging: targetPoints.reduce(

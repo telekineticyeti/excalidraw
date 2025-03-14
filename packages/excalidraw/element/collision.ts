@@ -204,25 +204,6 @@ const intersectRectanguloidWithLineSegment = (
   // Get the element's building components we can test against
   const [sides, corners] = deconstructRectanguloidElement(element, offset);
 
-export const hitElementBoundingBox = (
-  x: number,
-  y: number,
-  element: ExcalidrawElement,
-  elementsMap: ElementsMap,
-  tolerance = 0,
-) => {
-  let [x1, y1, x2, y2] = getElementBounds(element, elementsMap);
-  x1 -= tolerance;
-  y1 -= tolerance;
-  x2 += tolerance;
-  y2 += tolerance;
-  return isPointWithinBounds([x1, y1], [x, y], [x2, y2]);
-};
-
-export const hitElementBoundingBoxOnly = (
-  hitArgs: HitTestArgs,
-  elementsMap: ElementsMap,
-) => {
   return (
     [
       // Test intersection against the sides, keep only the valid

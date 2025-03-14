@@ -26,7 +26,6 @@ const deleteSelectedElements = (
   appState: AppState,
   app: AppClassProperties,
 ) => {
-  const elementsMap = app.scene.getNonDeletedElementsMap();
   const framesToBeDeleted = new Set(
     getSelectedElements(
       elements.filter((el) => isFrameLikeElement(el)),
@@ -251,11 +250,7 @@ export const actionDeleteSelected = register({
           : endBindingElement,
       };
 
-      LinearElementEditor.deletePoints(
-        element,
-        selectedPointsIndices,
-        elementsMap,
-      );
+      LinearElementEditor.deletePoints(element, selectedPointsIndices);
 
       return {
         elements,

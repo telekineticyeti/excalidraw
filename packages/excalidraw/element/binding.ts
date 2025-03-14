@@ -720,16 +720,8 @@ const calculateFocusAndGap = (
   );
 
   return {
-    focus: determineFocusDistance(
-      hoveredElement,
-      adjacentPoint,
-      edgePoint,
-      elementsMap,
-    ),
-    gap: Math.max(
-      1,
-      distanceToBindableElement(hoveredElement, edgePoint, elementsMap),
-    ),
+    focus: determineFocusDistance(hoveredElement, adjacentPoint, edgePoint),
+    gap: Math.max(1, distanceToBindableElement(hoveredElement, edgePoint)),
   };
 };
 
@@ -1253,7 +1245,6 @@ const updateBoundPoint = (
     bindableElement,
     binding.focus,
     adjacentPoint,
-    elementsMap,
   );
 
   let newEdgePoint: GlobalPoint;
