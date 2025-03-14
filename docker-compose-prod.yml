@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   excalidraw:
     stdin_open: true
@@ -8,7 +6,7 @@ services:
       target: production
     container_name: excalidraw
     ports:
-      - "5010:80"
+      - "5010:8080"
     restart: always
     healthcheck:
       disable: true
@@ -44,8 +42,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
     volumes:
       - postgres_data:/var/lib/postgresql/data/pgdata
-    #ports:
-    #  - "5432:5432"
+    # ports:
+    #   - "5432:5432"
 
 volumes:
   notused:
