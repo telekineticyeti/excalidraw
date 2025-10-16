@@ -131,6 +131,11 @@ class Collab extends PureComponent<CollabProps, CollabState> {
    * Manual saves (e.g., from stopCollaboration) are still allowed.
    */
   private canPersistToBackend = true;
+  /**
+   * Tracks whether the room has been successfully initialized at least once.
+   * Used to force reload on first initialization failure.
+   */
+  private hasSuccessfullyInitialized = false;
 
   private socketInitializationTimer?: number;
   private lastBroadcastedOrReceivedSceneVersion: number = -1;
@@ -322,6 +327,11 @@ class Collab extends PureComponent<CollabProps, CollabState> {
       this.resetErrorIndicator();
 
       if (this.isCollaborating() && storedElements) {
+        // Auto-recovery: backend is available again
+        if (!this.canPersistToBackend) {
+          this.canPersistToBackend = true;
+        }
+
         this.handleRemoteSceneUpdate(this._reconcileElements(storedElements));
       }
     } catch (error: any) {
@@ -725,6 +735,8 @@ class Collab extends PureComponent<CollabProps, CollabState> {
             getSceneVersion(elements),
           );
 
+          this.hasSuccessfullyInitialized = true;
+
           return {
             elements,
             scrollToContent: true,
@@ -735,9 +747,20 @@ class Collab extends PureComponent<CollabProps, CollabState> {
         // Use a more appropriate message for load/connection failures
         const errorMessage = t("errors.cannotResolveCollabServer");
 
+        // Close WebSocket connection to prevent working without persistence
+        this.portal.close();
+
         // stop any queued autosave attempts until user retries or session restarts
         this.canPersistToBackend = false;
         this.queueSaveToFirebase.cancel();
+
+        // Force reload on first initialization failure to prevent working with stale data
+        if (!this.hasSuccessfullyInitialized) {
+          console.error("Initial room join failed, forcing reload:", error);
+          alert(errorMessage);
+          window.location.reload();
+          return null; // Never reached, but TypeScript needs a return value
+        }
 
         if (
           !this.state.dialogNotifiedErrors[errorMessage] ||
